@@ -29,14 +29,21 @@ def read_dataset(file_name):
             if(data):
                 text, index = data
                 data_x.append(text)
-                data_y.append(index)
+                data_y.append(int(index))
 
     return data_x, data_y
 
 
-def get_data(count_texts=1000):
+def get_data(count_texts=100):
     data_x, data_y = read_dataset(os.path.join(DATA_DIR, 'data.csv'))
     return data_x[:count_texts], data_y[:count_texts]
+
+
+def get_standartized_data():
+    data_x, data_y = get_data()
+    data_x = standartize_data(data_x)
+    data_y = np.asarray(data_y)
+    return data_x, data_y
 
 
 def remove_stopwords(tokenized_data):

@@ -6,8 +6,8 @@ import os
 from settings import (TRAIN_NEG_DIR, TRAIN_POS_DIR,
                       TEST_NEG_DIR, TEST_POS_DIR, DATA_DIR)
 
-nltk.download('stopwords')
 
+nltk.download('stopwords')
 
 
 POSITIVE_INDEX = 1
