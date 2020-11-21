@@ -34,7 +34,7 @@ def read_dataset(file_name):
     return data_x, data_y
 
 
-def get_data(count_texts=100):
+def get_data(count_texts=10000):
     data_x, data_y = read_dataset(os.path.join(DATA_DIR, 'data.csv'))
     return data_x[:count_texts], data_y[:count_texts]
 

@@ -13,3 +13,6 @@ TRAIN_POS_DIR = os.path.join(TRAIN_DIR, 'pos')
 
 TEST_NEG_DIR = os.path.join(TEST_DIR, 'neg')
 TEST_POS_DIR = os.path.join(TEST_DIR, 'pos')
+
+
+XML_DIR = os.path.join(BASE_DIR, 'neuro/data/amazon')

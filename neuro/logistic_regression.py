@@ -43,7 +43,7 @@ def main():
     data = {
         'BAG-OF-WORDS': get_bow_convertation_data(),
         'TF-IDF': get_tf_idf_convertation_data(),
-        'WORD2VEC': [get_w2v_convertation_data()],
+        'WORD2VEC': get_w2v_convertation_data(),
     }
 
     for key, value in data.items():

@@ -36,7 +36,7 @@ def build_first_model():
     model.add(Embedding(MAX_WORDS, 100, input_length=MAX_LEN))
     model.add(LSTM(64))
     model.add(Dropout(0.5))
-    model.add(Dense(3))
+    model.add(Dense(2))
     model.add(Activation('softmax'))
 
     loss = 'sparse_categorical_crossentropy'
@@ -55,7 +55,7 @@ def build_second_model():
                         input_length=MAX_LEN))
     model.add(SimpleRNN(16))
     model.add(Dropout(0.3))
-    model.add(Dense(3))
+    model.add(Dense(2))
     model.add(Activation('softmax'))
 
     loss = 'sparse_categorical_crossentropy'
@@ -91,7 +91,7 @@ def check_models():
 
     models = {
         'first': build_first_model(),
-        # 'second': build_second_model(),
+        'second': build_second_model(),
     }
 
     results = {
@@ -105,7 +105,6 @@ def check_models():
         results[key] = model.evaluate(test_x, test_y)
         build_results_loss(history)
         build_results_accuracy(history)
-
 
 
 def build_results_loss(history):
