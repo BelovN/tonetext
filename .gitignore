@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 data/
+neuro/data/
 wsite/
 Neuro.py
 prepare_dataset.py

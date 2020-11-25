@@ -2,12 +2,13 @@ import csv
 import random
 import nltk
 import os
+import pandas as pd
 
-from settings import (TRAIN_NEG_DIR, TRAIN_POS_DIR, XML_DIR,
+from settings import (TRAIN_NEG_DIR, TRAIN_POS_DIR,
                       TEST_NEG_DIR, TEST_POS_DIR, DATA_DIR)
 
 
-# nltk.download('stopwords')
+nltk.download('stopwords')
 
 
 POSITIVE_INDEX = 1
@@ -81,29 +82,3 @@ def get_data(data_dir):
         text = read_text(file_dir)
         data.append(text)
     return data
-
-
-import xml.etree.ElementTree as ET
-
-
-def read_xml(file_dir):
-    with open(file_dir, encoding='utf-8') as f:
-        xml = f.read()
-    tree = ET.fromstring("<root>" + xml + "</root>")
-    return tree
-
-
-
-def prepare_xml(data_dir=XML_DIR):
-    data = []
-    file_names = os.listdir(path=data_dir)
-    for file_name in file_names:
-        file_dir = os.path.join(data_dir, file_name)
-        text = read_text(file_dir)
-        data.append(text)
-    return data
-
-
-d = os.listdir(XML_DIR)[0]
-p = os.path.join(XML_DIR, d)
-tree = read_xml(p)

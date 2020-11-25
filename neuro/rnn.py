@@ -1,4 +1,5 @@
 import tensorflow
+from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Embedding, LSTM, Dropout, Activation, SimpleRNN
 from tensorflow.keras.optimizers import RMSprop, Adam
@@ -7,13 +8,13 @@ from tensorflow.keras.preprocessing import sequence
 from nltk.tokenize import word_tokenize
 
 import matplotlib
-matplotlib.use('qt5agg')
-
 import matplotlib.pyplot as plt
 
-from sklearn.model_selection import train_test_split
 
-from convert_data import get_standartized_data, get_data
+from convert_data import get_standartized_data, get_data, load_data, stem_words, remove_stopwords
+
+
+matplotlib.use('qt5agg')
 
 
 MAX_WORDS = 10000
@@ -21,6 +22,7 @@ MAX_LEN = 150
 
 
 def tokenize_data(data):
+
     splited_data = []
     for text in data:
         splited_data.append(word_tokenize(text))
@@ -33,13 +35,14 @@ def tokenize_data(data):
 
 def build_first_model():
     model = Sequential()
-    model.add(Embedding(MAX_WORDS, 100, input_length=MAX_LEN))
-    model.add(LSTM(64))
+    model.add(Embedding(input_dim=MAX_WORDS,
+                        output_dim=50,
+                        input_length=MAX_LEN))
+    model.add(LSTM(40, activation='tanh'))
     model.add(Dropout(0.5))
-    model.add(Dense(2))
-    model.add(Activation('softmax'))
+    model.add(Dense(1, activation='sigmoid'))
 
-    loss = 'sparse_categorical_crossentropy'
+    loss = 'binary_crossentropy'
     metrics = ['accuracy']
     learning_rate = 0.001
     optimizer = Adam(learning_rate)
@@ -53,12 +56,11 @@ def build_second_model():
     model.add(Embedding(input_dim=MAX_WORDS,
                         output_dim=50,
                         input_length=MAX_LEN))
-    model.add(SimpleRNN(16))
+    model.add(LSTM(40, activation='tanh'))
     model.add(Dropout(0.3))
-    model.add(Dense(2))
-    model.add(Activation('softmax'))
+    model.add(Dense(1, activation='sigmoid'))
 
-    loss = 'sparse_categorical_crossentropy'
+    loss = 'binary_crossentropy'
     metrics = ['accuracy']
     learning_rate = 0.001
     optimizer = Adam(learning_rate)
@@ -85,13 +87,14 @@ def fit_nn(train_x, train_y, model):
 
 
 def check_models():
-    data_x, data_y = get_standartized_data()
+    data_x, data_y = get_standartized_data(count=30000)
     data_x = tokenize_data(data_x)
+
     train_x, test_x, train_y, test_y = train_test_split(data_x, data_y, test_size=0.2, random_state=40)
 
     models = {
-        'first': build_first_model(),
         'second': build_second_model(),
+        'first': build_first_model(),
     }
 
     results = {
@@ -129,8 +132,8 @@ def build_results_accuracy(history):
 
     epochs=range(1, len(history_dict['accuracy'])+1)
 
-    plt.plot(epochs, acc_values, 'bo', label='Training acc')
-    plt.plot(epochs, val_acc_values, 'b', label='Validation acc')
+    plt.plot(epochs, acc_values, 'bo', label='Training accuracy')
+    plt.plot(epochs, val_acc_values, 'b', label='Validation accuracy')
     plt.xlabel('Epohs')
     plt.ylabel('Accuracy')
     plt.legend()

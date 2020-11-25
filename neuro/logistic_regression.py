@@ -29,9 +29,9 @@ def get_most_important_features(vectorizer, model, n=5):
 
     return classes
 
+
 def build_regression(train_x, train_y, test_x, test_y):
-    clf = LogisticRegression(C=30.0, class_weight='balanced', solver='newton-cg',
-                             multi_class='multinomial', n_jobs=-1, random_state=40)
+    clf = LogisticRegression(C=1.0, class_weight='balanced', solver='liblinear', n_jobs=1, random_state=40)
     clf.fit(train_x, train_y)
 
     predicted_y = clf.predict(test_x)
@@ -40,10 +40,11 @@ def build_regression(train_x, train_y, test_x, test_y):
 
 
 def main():
+    count = 30000
     data = {
-        'BAG-OF-WORDS': get_bow_convertation_data(),
-        'TF-IDF': get_tf_idf_convertation_data(),
-        'WORD2VEC': get_w2v_convertation_data(),
+        'BAG-OF-WORDS': get_bow_convertation_data(count=count),
+        'TF-IDF': get_tf_idf_convertation_data(count=count),
+        'WORD2VEC': get_w2v_convertation_data(count=count),
     }
 
     for key, value in data.items():
